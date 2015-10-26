@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-framework="react">
+<head>
+    <meta charset="utf-8">
+    <title>React • TodoMVC</title>
+    <link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+    <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+</head>
+<body>
+<div id="workerdom-context">
+    <section class="todoapp" data-workerdomid="root"></section>
+</div>
+<footer class="info">
+    <p>Double-click to edit a todo</p>
+
+    <p>Created by <a href="http://github.com/petehunt/">petehunt</a></p>
+
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+</body>
+<script>
+    (function () {
+        var worker = new Worker('js/bundle.js');
+        worker.postMessage(JSON.stringify({
+            action: 'start',
+            startBodyContext: document.getElementById('workerdom-context').innerHTML
+        }));
+
+        worker.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            if (data.action) {
+                Actions[data.action].call(null, data);
+            }
+        };
+
+        Actions = {};
+        Actions.appendChild = function (data) {
+            var node = document.querySelector("[data-workerdomid=" + data.workerdomid + "]");
+            var elem = document.createElement('div');
+            elem.innerHTML = data.value;
+            elem = elem.firstChild;
+            while (elem) {
+                node.appendChild(elem);
+                elem = elem.nextSibling;
+            }
+        };
+        Actions.innerHTML = function (data) {
+            var node = document.querySelector("[data-workerdomid=" + data.workerdomid + "]");
+            node.innerHTML = data.value;
+        }
+    })();
+</script>
+</html>
