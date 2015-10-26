@@ -53,8 +53,8 @@ window.onmessage = function (e) {
 var Actions = {};
 Actions.start = function (data) {
   require([
-    'js/simple-html-tokenizer.js',
-    'js/simple-dom.js',
+    'simple-html-tokenizer.js',
+    'simple-dom.js',
     function () {
       window.document = new Document();
       document.getElementsByTagName('body')[0].innerHTML = data.startBodyContext;
@@ -63,15 +63,15 @@ Actions.start = function (data) {
         postMessage(JSON.stringify(data));
       };
     },
-    'js/react-with-addons.js',
-    'node_modules/todomvc-common/base.js',
-    'node_modules/classnames/index.js',
-    'node_modules/director/build/director.js',
-    'js/utils.js',
-    'js/todoModel.js',
-    'js/todoItem.js',
-    'js/footer.js',
-    'js/app.js'], function () {
+    'react-with-addons.js',
+    '../node_modules/todomvc-common/base.js',
+    '../node_modules/classnames/index.js',
+    '../node_modules/director/build/director.js',
+    'utils.js',
+    'todoModel.js',
+    'todoItem.js',
+    'footer.js',
+    'app.js'], function () {
 
   });
 };
